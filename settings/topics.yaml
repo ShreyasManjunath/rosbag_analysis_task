@@ -1,11 +1,17 @@
-topics: ["/stop_signal", "/long_term_slam/error_code"]
+topics: ["/stop_signal", "/long_term_slam/error_code", "/nav_controller/error_code"]  
 
 error_codes: ["WIPALTSLO0308", 
               "WIPALTSLO0306", 
               "TIPALTSLO0309", 
-              "OIPALTSLO0300"]
+              "OIPALTSLO0300",
+              "WIPANAVCT0209",
+              "WIPANAVCT0216",
+              "WIPANAVCT0206"]
 
-error_codes_comments: ["Odom Jump Detected!, Localization error.", 
-                      "Localization Recovery Tried.", 
-                      "Localization state error.", 
-                      "InitialPose failed."]
+error_codes_comments: ["LTS: Odom Jump Detected!, Localization error.", 
+                      "LTS: Localization Recovery Tried.", 
+                      "LTS: Localization state error.", 
+                      "LTS: InitialPose failed.",
+                      "NAV_CTRL: Controller started with an invalid plan.",
+                      "NAV_CTRL: Safety Field issue.",
+                      "NAV_CTRL: Robot Stuck:stuck detector fired, will trigger backwards recovery."]

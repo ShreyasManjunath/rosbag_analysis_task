@@ -81,9 +81,9 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/04_rosbag_analysis_task.cpp
-#)
+add_library(${PROJECT_NAME}
+   src/error_detector.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -107,6 +107,7 @@ add_executable(${PROJECT_NAME}_node src/rosbag_analysis.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
+   ${PROJECT_NAME}
    ${catkin_LIBRARIES}
 )
 
