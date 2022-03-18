@@ -1,0 +1,11 @@
+topics: ["/stop_signal", "/long_term_slam/error_code"]
+
+error_codes: ["WIPALTSLO0308", 
+              "WIPALTSLO0306", 
+              "TIPALTSLO0309", 
+              "OIPALTSLO0300"]
+
+error_codes_comments: ["Odom Jump Detected!, Localization error.", 
+                      "Localization Recovery Tried.", 
+                      "Localization state error.", 
+                      "InitialPose failed."]

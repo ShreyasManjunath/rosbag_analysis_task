@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+	 <arg name="rosbag_file_name"/>
+	 <node name="rosbag_analysis_task_node" pkg="rosbag_analysis_task" type="rosbag_analysis_task_node" clear_params="true" output="screen">
+	 	<param name="bag_file" value="$(arg rosbag_file_name)"/>
+	 	<rosparam file="$(find rosbag_analysis_task)/settings/topics.yaml"/>
+	 </node>
+</launch>
