@@ -8,6 +8,13 @@ ErrorDetector::ErrorDetector()
 	ros::param::get("/rosbag_analysis_task_node/bag_file", this->bag_file);
 	ros::param::get("/rosbag_analysis_task_node/error_codes", this->error_codes_v);
 	ros::param::get("/rosbag_analysis_task_node/error_codes_comments", this->error_codes_comments_v);
+
+	std::string pkgPath = ros::package::getPath("rosbag_analysis_task");
+    std::fstream logFile;
+    logFile.open((pkgPath+"/data/report.log").c_str(), std::ios::out);
+    logFile << "Report of rosbag : " << this->bag_file << "\n";
+    logFile << "---------------------------------\n";
+    logFile.close();
 }
 
 ErrorDetector::~ErrorDetector()
@@ -53,7 +60,10 @@ bool ErrorDetector::detect()
 			std::string reason_for_error;
 			if(it != error_codes.end())
 				reason_for_error = it->second;
-			std::cout << reason_for_error << " @ :" << time_string << std::endl;
+			reason_for_error.append(" @ TimeStamp: ");
+			reason_for_error.append(time_string);
+			writeIntoFile(reason_for_error);
+			// std::cout << reason_for_error << std::endl;
 		}
 
 	}
@@ -70,4 +80,30 @@ std::string ErrorDetector::getMessageTime(rosbag::MessageInstance const& msg) co
 	ss << time.sec << "." << time.nsec;
 	std::string time_string = ss.str();
 	return time_string;
+}
+
+bool ErrorDetector::writeIntoFile(std::string& logMessage)
+{
+	std::string pkgPath = ros::package::getPath("rosbag_analysis_task");
+    std::fstream logFile;
+    logFile.open((pkgPath+"/data/report.log").c_str(), std::ios::app | std::ios::out);
+    if(!logFile.is_open())
+    {
+    	ROS_ERROR("Could not open report.log");
+    	return false;
+    }
+    logFile << logMessage << "\n";
+    logFile.close();
+    return true;
+
+}
+
+std::map<std::string, std::string> ErrorDetector::getErrorCodesMapping() const
+{
+	return this->error_codes;
+}
+
+std::string ErrorDetector::getBagFileNameAndLocation() const
+{
+	return this->bag_file;
 }

@@ -11,6 +11,7 @@
 #include <std_msgs/String.h>
 #include <std_msgs/Bool.h>
 #include <string>
+#include <fstream>
 
 class ErrorDetector
 {
@@ -19,6 +20,9 @@ class ErrorDetector
 		~ErrorDetector();
 		bool init();
 		bool detect();
+
+		std::map<std::string, std::string> getErrorCodesMapping() const;
+		std::string getBagFileNameAndLocation() const;
 
 	private:
 		std::map<std::string, std::string> error_codes;
@@ -33,6 +37,7 @@ class ErrorDetector
 
 	private:
 		std::string getMessageTime(rosbag::MessageInstance const& msg) const;
+		bool writeIntoFile(std::string& logMessage);
 		
 
 };
