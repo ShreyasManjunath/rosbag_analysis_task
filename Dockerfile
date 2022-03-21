@@ -1,8 +1,7 @@
 FROM ros:noetic-ros-base
 RUN apt-get update && apt-get install python3-catkin-tools -y \
 && rm -rf /var/lib/apt/lists/*
-SHELL ["/bin/bash", "-c"] 
-ENV ROSBAG=
+SHELL ["/bin/bash", "-c"]
 
 RUN source /opt/ros/noetic/setup.bash \
 && mkdir -p /ros_ws/src/rosbag_analysis_task/bag \
