@@ -7,6 +7,7 @@
 #include <sstream>
 
 ErrorDetector::ErrorDetector() : present_stop_signal{false} {
+  // Get all the rosparams
   ros::param::get("/rosbag_analysis_task_node/topics", this->topics);
   ros::param::get("/rosbag_analysis_task_node/bag_file", this->bag_file);
   ros::param::get("/rosbag_analysis_task_node/error_codes",
@@ -14,6 +15,7 @@ ErrorDetector::ErrorDetector() : present_stop_signal{false} {
   ros::param::get("/rosbag_analysis_task_node/error_codes_comments",
                   this->error_codes_comments_v);
 
+  // Setup log file
   std::string pkgPath = ros::package::getPath("rosbag_analysis_task");
   std::fstream logFile;
   logFile.open((pkgPath + "/data/report.log").c_str(), std::ios::out);
@@ -25,18 +27,22 @@ ErrorDetector::ErrorDetector() : present_stop_signal{false} {
 ErrorDetector::~ErrorDetector() {}
 
 bool ErrorDetector::init() {
+  // Map the error code and comments together
   for (int i = 0; i < error_codes_v.size(); i++) {
     error_codes.insert(
         {this->error_codes_v[i], this->error_codes_comments_v[i]});
   }
   this->bag = std::make_shared<rosbag::Bag>();
 
+  // Read the rosbag.
   try {
     bag->open(bag_file, rosbag::bagmode::Read);
   } catch (rosbag::BagException) {
+    // If not found, throw an error.
     ROS_ERROR("Error opening file : %s", bag_file.c_str());
     return false;
   }
+  // Setup a rosbag view and add topics as queries.
   this->view = std::make_shared<rosbag::View>();
   this->view->addQuery(*bag, rosbag::TopicQuery(topics));
   this->begin_time = this->view->getBeginTime();
@@ -53,7 +59,9 @@ bool ErrorDetector::detect() {
     std_msgs::String::ConstPtr lts_nav_error =
         msg.instantiate<std_msgs::String>();
 
+    // Check for stop signal and non-null error message.
     if (present_stop_signal && lts_nav_error != NULL) {
+      // Get the message time and duration.
       auto time_string = getMessageTime(msg);
       auto duration_string = getMessageDuration(msg);
       auto it = error_codes.find(lts_nav_error->data.c_str());
@@ -64,11 +72,13 @@ bool ErrorDetector::detect() {
       reason_for_error.append(time_string);
       reason_for_error.append(" , ROS bag duration: ");
       reason_for_error.append(duration_string);
+
+      // Write it into a log file.
       writeIntoFile(reason_for_error);
       // std::cout << reason_for_error << std::endl;
     }
   }
-
+  // Close the bag
   this->bag->close();
 
   return true;

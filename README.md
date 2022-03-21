@@ -49,8 +49,8 @@ ROSBAG_NAME=xyz.bag
 BAG_LOCATION=/home/user_name/folder_name
 OUTPUT_LOCATION=/home/user_name/folder_name
 ```
-ROSBAG_NAME -> Rosbag name
-BAG_LOCATION -> Rosbag location on the user's side (Used as docker volume).
+ROSBAG_NAME -> Rosbag name.\
+BAG_LOCATION -> Rosbag location on the user's side (Used as docker volume).\
 OUTPUT_LOCATION -> Desired output location on the user's side to obtain the "report.log" file.
 
 - Further, docker-compose command is used to bringup the container for launching the container and running the node.
