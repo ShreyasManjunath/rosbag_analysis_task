@@ -7,6 +7,7 @@ ENV ROSBAG=
 RUN source /opt/ros/noetic/setup.bash \
 && mkdir -p /ros_ws/src/rosbag_analysis_task/bag \
 && cd /ros_ws && catkin init
+
 WORKDIR /ros_ws
 
 COPY . /ros_ws/src/rosbag_analysis_task
@@ -17,15 +18,16 @@ RUN rosdep update && \
         /ros_ws/src/rosbag_analysis_task \
       --ignore-src && \
     rm -rf /var/lib/apt/lists/*
-    
+
 RUN catkin config \
 --extend /opt/ros/$ROS_DISTRO && \
-catkin build \
-rosbag_analysis_task
-RUN catkin build && mkdir -p /ros_ws/src/rosbag_analysis_task/bag
-RUN source /ros_ws/devel/setup.bash 
+catkin build rosbag_analysis_task
+RUN /bin/bash -c "source /opt/ros/$ROS_DISTRO/setup.bash && source /ros_ws/devel/setup.bash"
+
+#COPY startpoint.sh /startpoint.sh
+#RUN sudo chmod +x /startpoint.sh
+#ENTRYPOINT ["/startpoint.sh"]
 
 
-CMD ["roslaunch", "rosbag_analysis_task", "analyse.launch", "rosbag_file_name:=/ros_ws/src/rosbag_analysis_task/bag/${ROSBAG}"]
 
 

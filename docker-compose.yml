@@ -1,0 +1,11 @@
+version: "3"
+services:
+  rosbag_analysis:
+    image: rosbag_analysis
+    command:
+      - roslaunch rosbag_analysis_task analyse.launch rosbag_file_name:=/ros_ws/src/rosbag_analysis_task/bag/dummy_env-agv-50231.agv-2020-10-01T082312+0200_2020-10-01-11-28-17_37.bag
+    volumes:
+      - /home/shreyas/04_Rosbag_Analysis_Task:/ros_ws/src/rosbag_analysis_task/bag 
+      - /home/shreyas/data:/ros_ws/src/rosbag_analysis_task/data
+    environment:
+      ROS_MASTER_URI: http://roscore:11311
