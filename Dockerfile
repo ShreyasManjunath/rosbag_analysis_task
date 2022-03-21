@@ -22,11 +22,10 @@ RUN rosdep update && \
 RUN catkin config \
 --extend /opt/ros/$ROS_DISTRO && \
 catkin build rosbag_analysis_task
-RUN /bin/bash -c "source /opt/ros/$ROS_DISTRO/setup.bash && source /ros_ws/devel/setup.bash"
 
-#COPY startpoint.sh /startpoint.sh
-#RUN sudo chmod +x /startpoint.sh
-#ENTRYPOINT ["/startpoint.sh"]
+COPY startpoint.sh /startpoint.sh
+RUN sudo chmod +x /startpoint.sh
+ENTRYPOINT ["/startpoint.sh"]
 
 
 
