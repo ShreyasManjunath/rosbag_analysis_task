@@ -1,7 +1,7 @@
 version: "3"
 services:
   rosbag_analysis:
-    image: rosbag_analysis
+    image: shreyasmanjunath/rosbag_analysis
     environment:
       ROSBAG_NAME: ${ROSBAG_NAME}
       BAG_LOCATION: ${BAG_LOCATION}
